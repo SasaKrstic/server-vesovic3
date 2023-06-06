@@ -1,0 +1,452 @@
+lek: 04 : bands app 2 
+
+
+<Band band={band}/>
+bend je = sam bend iz naseg loopa, sada nam je dostupan taj bend unutar bend komponente
+
+zatim u car body dodajemo img i info 
+zatim u footer dodajemo button a onda i modal za koju pravimo novu komponentu modal.js
+
+
+u band list dodajemo komponentu changeCurrentBand i u band list dodajemo gore i u komponenti Band
+
+
+ovaj properti state bice zapravo(band) koji sam poslao
+ changeCurrentBand = (band) => {
+    // console.log("Changed");
+    this.setState({ currentBand: band }); 
+    //sada ce ovaj property biti onaj bend koji smo poslali, medjutim sada zelimo da modal bude svestan
+     koji je to bend dakle ispood u modal ide currentBand={this.state.currentBand}
+  };
+  
+  
+  lek: 05 : react bootstrap potpuno zamenjuje bootstrap javascript
+  menjamo bootstrap js i css i MODAL
+  
+  ovo dugme ce pozvati change changeCurrentBand i u app.js cemo pozvati show funk,
+   takodje izbacili smo target data i toggle
+   <button
+          className="btn btn-info float-right"
+          data-toggle="modal"
+          data-target="#exampleModal"
+          onClick={() => {
+            changeCurrentBand(band)
+          }}
+        >
+  
+
+
+semestar 2 lek: 06 : React Router
+
+uz pomoc routera cemo prikazivati odredjen sadrzaj u zavisnosti sta kliknemo u meniju
+da bi sam Browser ROUTER reagovao na promene url moramo da mu zakazemo ROUTE
+
+ono sto route zahteva je putanja PATH, a renderuje ovo (kad rauter dodje na ovu putanju renderuje ovo) / ili about route
+        <Route
+          path="/"
+          exact
+          render={() => {
+            return <h1>Home page </h1>
+          }}
+        ></Route>
+        
+     exact   znaci da samo ta putanja ide za taj kliknemo
+     
+     
+     posle ovog ide stvaranje komponente za
+      <Route path="/" exact component={Home}></Route>
+        <Route path="/about" exact component={About}></Route>
+        <Route path="/contact" exact component={Contact}></Route>
+        
+        i
+        
+        import React from "react"
+        const Contact = () => {
+        return <h1>Contact Component </h1>
+        }
+        export default Contact
+
+     
+     
+     zatim da BI IZBEGLI REFRESOVANJE STRANICE ZBOG LINKOVA jer mi pravimo SINGLE PAGE APLIKACIJU <a>
+     ubacujemo LINK a href moramo da promenimo sam href na TO={}
+     
+     
+     CSS UBACIVANJE 
+    import "./navbar.css"; IZ OVOG FOLDERA ubaci css
+    
+    ili koristimo modul css
+    Navbar.module.css
+    
+    ovo ispod activeClassName i className znaci da prihvata uz aktivnu klasu i styles . active a drugo je klasa koja izvlaci css iz tog css-a
+        <NavLink
+        to="/contact"
+        exact
+        activeClassName={styles.active}
+        className={styles.navbaritem}
+        >
+        Contact
+        </NavLink> 
+        
+        Push redirektuje na druge stranice
+ 
+ 
+ semestar 2 lek: 08 : HOC HIGHER ORDER Component
+ 
+ (Jedna funkcija koja za cilj ima da OSTALIM KOMPONENTAMA KOJE MIZELIMO DAJE OSTALE FUNKCIONALNOSTI)
+ 
+ imamo boxove i da ne bi kucali 10 boxeva pravimo jedan univerzlni sablon HOC
+ withCounter.js
+ konvencija pisanja hoc js with i onda nesto sto se bavi recimo u ovom slucaju counter
+ 
+ svaka komponenta koja ima class metodu ima render return metodu
+ 
+ 
+ semestar 2 lek: 09 : with counter
+ saljemo propertije unutar same komponente (withCounter.js) <MainComponent counter={this.state.counter} incCounter={this.incCounter}>,
+ a prihvatamo u komponenti tako sto uzimamo iz propsa onClick={this.props.incCounter} {this.props.counter}
+ 
+ cadetBox u ovom stadijumu radi ali nema nikakve veze sa grupnom, te moramo i nju da prebavcimo
+ 
+ 
+  semestar 2 lek: 12 :  Accounts App 4
+
+pitamo se da li ide class base ili functional component
+posto treba da manipulisemo podacima pravi se CLASS KOMPONENTAMA
+
+putem input polja zelimo da menjamo vrednosti  samog ovog newAccout, za to ce nam trebati onchange event listener
+<input onchange={this.changeHandler} type="text" id="phone" placeholder="Phone" className="form-control" />
+
+putam changeHandler menjamo id
+kad god se nesto desi u toj varijabli u input polju menjamo vrednosti
+
+  changeHandler = (event) => {
+    let id = event.target.id
+    console.log(id)
+    //ppravimo kopiju statea da ne bi menjali glavni state
+    let newAccountCopy = {...this.state.newAccount}
+  }
+ 
+ zatim save treba da promeni state u app.js
+ kada dugme pozove nasu funk addNewAccount mi cemo pozvati funck iz nase komponente app.js i poslacemo je u nas newAccount:ispood
+ 
+ na klik save treba da nas prebaci na listu to treba da se koristimo sa history objectom
+ HOC
+ to radimo sa Push 
+    this.props.history.push("/")
+    ali pre toga moramo da dodamo withdraw u import i 
+    
+export default withRouter(AddAccount)
+ 
+ 
+  semestar 2 lek: 13 :  Accounts App 4
+  edit i del dugmici ce se nekad prikazivati a nekad ne u zavisnosti da li imamo sta da menjamo i brisemo
+  
+  
+  deleteAccount = (id) => {
+    console.log("Delete")
+    console.log(id)
+
+    const accountsCopy = [...this.state.accounts]
+    // novi copy je = od samo naseg accountsCopy filter, za svaki account da testiramo od samog tog accounta id i da se vrati samo ako nije = id koji smo poslali
+    //dakle vrati svaki account ciji id nije ovaj koji smo mi poslali
+    const newCopyAccounts = accountsCopy.filter((account) => {
+      //moze i bez returna
+      return account.id !== id
+    })
+    this.setState({ accounts: newCopyAccounts })
+  }
+  
+  
+   const actionButtons = edit ? (
+    <>
+      <td>
+        {/* ovde zelimo da prosledimo id da bi znali sta da obrisemo. dakle pozivamo jedan arrow fonk a unutra pozvati deleteAccount i sad mozemo da prosledimo sam accound ID */}
+        {/* <button onClick={deleteAccount} className="btn btn-danger"> */}
+        <button
+          onClick={() => {
+            deleteAccount(account.id)
+          }}
+          className="btn btn-danger"
+        >
+          Delete
+        </button>
+      </td>
+      <td>
+        <button className="btn btn-warning">Edit</button>
+      </td>
+    </>
+  ) : null
+  
+  
+  
+  ako je ova var EDIT true pokrece se
+  const actionButtons = edit ? (
+        <>
+        <td><button className="btn btn-danger">Delete</button></td>
+        <td><button className="btn btn-warning">Edit</button></td>
+        </>
+    ) : null 
+    null znaci da se u slucaju da nije ispunjen uslov nist ane pokrece
+ 
+ semestar 2 lek: 14 :  Accounts App 4-2
+ edit zahteva potpuno novi view
+ u account.js na mestu buttona kod edit treba da uvedemo da to bude LINK i da vodi na novi view! import link u header
+  <Link to={/edit/2} moramo da napravimo dinamicki ovaj deo da nas vodi na odredjen id 
+ 
+ EditAccount da li ce biti class base ili funkc , mona ce imati formu pa cemo morati da manipulisemo podacima
+ DAKLE CLASS BASE Component
+ 
+ </Switch> kada naidje na jednu stvar koja je tacna izlazi iz switch statementa i ne nastavlja dalje.
+ 
+ zatim treba da menjamo edit na koji smo kliknuli 
+  
+  koji account mi treba da dodelimo ovom accountu, gde se nalazi id koji je u url kada kliknemo na neki. to postizemo sa HOC
+ componentDidMount() {
+    // account ??
+    
+  }
+ 
+  semestar 2 lek: 15 :  Accounts App 5
+  //copyOfAccount je kopija ovog naseg accounta iz vrha account:
+  changeAccount = (event) => {
+    const copyOfAccount = { ...this.state.account }
+    copyOfAccount[event.target.id] = event.target.value
+    this.setState({ account: copyOfAccount })
+  }
+  
+  zatim dodajemo LISTENER na nase dugme save
+  
+  editAccount = () => {
+    //ovde zelimo da pozovemo funk koja se nalazi u app.js accounts={this.state.accounts}
+
+    //ova edit account poslace sam acc u vrhu
+    //gde ce se nalaziti nalazice se u ovom kodu ispod
+    this.props.editAccount(this.state.account)
+  }
+  
+  app.js
+   //mozemo isto nazvati editAccount kao i na edit account.js
+  //zelimo da ova metoda menja ove nase account iz state gore
+  editAccount = (acc) => {
+    console.log(acc)
+  }
+  
+ 
+   semestar 2 lek: 16 : React Hooks Hooks Hooks Hooks Hooks Hooks Hooks Hooks Hooks
+    Hooks Hooks Hooks Hooks Hooks Hooks Hooks Hooks Hooks Hooks Hooks Hooks Hooks Hooks
+   hooks su dodatna funkcionalsnost od react 16.8.
+   hooks su samo funk koje nam omogucavaju da koristimo state i ostale react funkcionalnosti a da ne koristimo klase.
+   
+ svaki hook pocinje sa use
+ 
+ USESTATE JE SAMO FUNKC
+USESTATE(); ZAHJTEVA JEDAN PARAMETAR, taj par je inicijalna vrednost state propertija 
+sama useState funkc vraca dve stvari, jedan je sam property  
+ 
+  const [name, changeName] = useState("") SADA JE NAS NAME U STATEU ZAPRAVO PRAZAN STRING 
+ 
+ 
+ 
+   semestar 2 lek: 17 : state
+ kada koristimo state UNUTAR CLASS BASE KOMPONENTE TAJ STATE JE UVEK OBJECT 
+ A KADA KORISTIMO USE STATE MOZE BITI INTEGER STRING OBJECT ITD.
+ 
+ u ovom slucaju 2. red menja samo deposit a ne menja ime tako da moramo sa rest ooperatorom da sredimo
+        const [account, setAccount] = useState({ name: "Sasa", deposit: 11000 })
+        onChange={(e) => setAccount({ deposit: e.target.value })}
+        
+ovako bi trebalo
+        onChange={(e) => setAccount({...account,  deposit: e.target.value })}
+        dakle iz ...account menjaj samo deposit i stavi value iz input polja
+ 
+ 
+ 
+   semestar 2 lek: 18 :  USE STATE VREDNOST STATE VARIJABLI
+ - use state nam omogucava da koristimo state bez klasa
+ - state nije vise samo objekat
+ - use state vraca array sa dva elemenata ( 1. trenutnu vrednost state=a 2. setter funkciju )
+ 
+ semestar 2 lek: 19 - USEEFFECT
+  USEEFFECT je jos jedan hook koji koristimo
+  
+  ova funkc ispod pozvace se posle svakog rendenovanja naseg elementa html
+  useEffect(() => {
+    console.log("Component render ZAVRSENA")
+  })
+  
+  
+  posle ove funkc ispod dodajemo prazan array kao argument jer consola vrti stalno, a nama treba inicijalni rezultat
+function Users() {
+  const [users, setUsers] = useState([])
+
+  useEffect(() => {
+    console.log("Component render ZAVRSENA")
+    fetch("https://jsonplaceholder.typicode.com/users")
+      .then((res) => res.json())
+      .then((result) => {
+        setUsers(result)
+      })
+  },[])
+
+  return (
+    <div className="container">
+      <h1>Users</h1>
+      {users.map((user) => {
+        return <li>{user.name}</li>
+      })}
+    </div>
+  )
+}
+
+/**/preskocili smo 2 lekciju user2 ya koriscenje user effecta
+function Users2() {
+  const [display, setAccount] = useState(name: "Sasa", deposit: 11000)
+
+  useEffect(() => {
+    console.log("rendering")
+    
+  }, [])
+
+  return (
+    <div className="container">
+      <h1>Users 2</h1>
+      <input type="text" placeholder="name" onChange={event=>{ setAccount({...account,name:event.target.value})}}>
+      <input type="text" placeholder="deposit" onChange={event=>{ setAccount({...account,deposit:event.target.value})}}>
+    </div>
+  )
+}
+  
+ semestar 2 lek: 20 : CONTEXT
+ ovde sam preimenovao i ubacio novu app.js (app20usecontext.js) sa main i asside js
+ ukoliko saljemo vise valueo moze biti problem zato koristimo useContext
+ 
+ 
+ semestar 2 lek: 21 : useCONTEXT
+ 
+ //////////////////
+ semestar 2 lek: 22 : USEREF HHOK Accounts hooks
+useRef hook sluzi da mozemo da selektujemo neki dom elmenent
+
+ kad diodjemo na stranicu da nam bude fokusirano na ime ilipassword koristimo  useRef 
+ const textInput = useRef()
+  useEffect(() => {
+    textInput.current.focus()
+  }, [])
+   <input type="text" ref={textInput} placeholder="name"></input>
+ 
+ 
+ 
+ //////////////////
+ semestar 2 lek: 23 : dodavanjehooks metoda na account tpl prepravljanje class u function
+ this brisemo jer on referise na class.
+ 
+ izbacujemo id iz inputa u AddAccountAccounts.js
+ takodje izbacujemo
+  //   change handler nam vise ne treba i u on clik moramo da se sluzimo drugacijom
+  //   const changeHandler = (event) => {}
+ 
+ //////////////////
+ semestar 2 lek: 24 : deploy
+ npm run build
+ npm i -g serve
+ serve -s build
+ 
+ node.js mongo db podizemo aplikaciju na DIGITAL OCEAN 
+ 
+ - npm uninstall react-router-dom --save 
+ - npm install react-router-dom@5 --save 
+ 
+ npm install react-router-dom@5 bootstrap@4 --save
+ 
+ 
+ //////////////////
+ semestar 2 lek: 25 : node.js
+ 
+ 
+  //////////////////
+  //////////////////
+  //////////////////
+  //////////////////
+  //////////////////
+  //////////////////
+ semestar 3 lek: REDUX
+ 
+ REDUX
+ const store = Redux.createStore(reducer)
+ --- moramo napraviti STORE i sam store ocekuje neki argument reducer
+ 
+ --- sam reducer ocekuje state i action , 
+ zadali smo state neki defaultni na pocetku gore a onda smo store dispecuje neku akciju u na sem slucaju CHANGE_NAME , 
+ tada se pokrenuo reducter proverio da li je stvarno changename akcija 
+ ako jeste promeni u ivana ako nije vrati initial state
+ 
+ pozivamo funck u kome se desi neki nas action,
+  i kada se ona desi daj mi od onog stora getstate, 
+  da vidimo sta je unutar state-a 
+ 
+ store.subscribe(function () {
+  console.log(store.getState())
+})
+ 
+ 
+  semestar 3 lek: 05 ACCOUNTS  REDUX 2
+
+04,05,06 lekcija jako bitne za shvatanje reduxa
+
+
+ semestar 3 lek: 06 ACCOUNTS  REDUX 3
+ mi smo kreirali action kreater a to je zapravo funk koja nam kreira tj vraca nas object 
+ return {
+    type: "ADD_NEW_ACCOUNT",
+    payload: {
+      newAccount: {
+        id: "2",
+        name: "Ivan",
+        phone: "3333 3333",
+        email: "ivan@gmail.com",
+      },
+    },
+  }
+  to znaci da u main.js moramo da promeinmo da pozivamo tu funk
+  
+  
+  ///////////////////////////////////////
+   semestar 3 lek: 07 DEV SERVER
+   PRAVLJENJE SERVERA
+   
+   kazemo gde sve treba da bajnduje da spoji sve te nase fajlove u nas fajl
+   filename gde je sve bajndlovano neka se zove app.js
+    a putanja do tog fajla path: 
+    iz naseg dir __dirname imacemo dist!
+    
+const path = require("path")
+module.exports = {
+  mode: "development",
+  entry: "./src/index.js",
+  output: {
+    filename: "app.js",
+    path: path.resolve(__dirname, "dist"),
+  },
+  devServer: {
+    static: path.join(__dirname, "dist"),
+    port: 9000, //default port je 8080
+  },
+}
+
+   ostaje nam samo da konfigurisemo dev SERVER, odakle da vuce sam CONTENT
+   devServer: {
+    contentBase: path.join(__dirname, "dist"),
+    port: 9000 //default port je 8080
+   }  
+  
+  zatim u package.json 
+  dodajemo sta da radi nasa skripta "start"
+  "start": "webpack-dev-server --open" ovaj server ce otici i procitati sve iz nase konfiguracionog fajla,
+  
+  
+  ///////////////////////////////////////
+   semestar 3 lek: 07 KREIRANJE MODULA
+ Sada kada imamo nas server impleentiramo reduxa
+ 
+ npm i redux --save instaliranje reduxa
