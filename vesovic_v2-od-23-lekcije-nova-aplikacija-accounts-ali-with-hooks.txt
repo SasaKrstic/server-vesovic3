@@ -450,3 +450,72 @@ module.exports = {
  Sada kada imamo nas server impleentiramo reduxa
  
  npm i redux --save instaliranje reduxa
+
+
+
+  ///////////////////////////////////////
+   semestar 3 lek: 08 KREIRANJE MODULA
+   
+   action_creators.js su samo funkcije
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Redux.js je biblioteka za upravljanje stanjem (state management) u JavaScript aplikacijama, posebno u okviru React aplikacija. Redux pomaže u organizaciji i upravljanju stanjem aplikacije, čineći ga predvidljivim i lako pratljivim.
+
+Uzorak upravljanja stanjem koji se koristi u Redux-u temelji se na arhitekturi "flux", a osnovna ideja je da se stanje aplikacije centralizira i upravlja putem jednog objekta koji se naziva "Store". Komponente mogu izvršiti "akcije" koje se šalju reducerima kako bi se ažuriralo stanje u Store-u. Reduceri su funkcije koje određuju kako će se stanje promijeniti na temelju akcija koje su izvršene.
+
+
+Glavne prednosti korištenja Redux-a uključuju:
+
+Predvidljivost stanja: Stanje aplikacije se čuva u jednom objektu, što olakšava praćenje promjena i pronalaženje uzroka grešaka.
+
+Lakše upravljanje stanjem: Redux olakšava organizaciju stanja i upravljanje kompleksnim logikama aplikacije.
+
+Lakše testiranje: Budući da se stanje nalazi u zasebnom objektu, testiranje logike Redux-a postaje jednostavnije i neovisno o React komponentama.
+
+Lako proširivanje aplikacije: Redux olakšava dodavanje novih funkcionalnosti i mijenjanje stanja aplikacije bez potrebe za mnogo izmjena u komponentama.
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////
+///////////////////////////////////////
+///////////////////////////////////////
+   semestar 3 lek: 09 ACCOUNTS MOuDLI
+   
+   immamo kao argument newAccount da bi ga upotrebili u samo actionu. i imali smo payload gde smo imali newaccount i prosledili mu newaccount
+
+export const ADD_NEW_ACCOUNT = (newAccount) => {
+  return {
+    type: actionTypes.ADD_NEW_ACCOUNT,
+  }
+  }
+
+
+///////////////////////////////////////
+///////////////////////////////////////
+///////////////////////////////////////
+   semestar 3 lek: 10 Delete Account
+   
+   
+   
+   
+    //////////////////
+  //////////////////
+  //////////////////
+ semestar 3 lek: ROOT REDUCER
+ pravimo nove reducere
+ displayREducer.js i accounts reducer, pravimo zaseban root reducer i koristimo funkciju combine reducer da spojimo ta dodavanje
+ 
+ 
+ pronasao ovaj deo za resavanje store create store 
+ import { applyMiddleware, createStore } from "redux"
+import { composeWithDevTools } from "redux-devtools-extension"
+import thunkMiddleware from "redux-thunk"
+import { rootReducer } from "./rootReducer"
+
+const composedEnhancer = composeWithDevTools(applyMiddleware(thunkMiddleware))
+
+const store = createStore(rootReducer, composedEnhancer)
+
+export default store
