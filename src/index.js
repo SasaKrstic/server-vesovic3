@@ -43,11 +43,11 @@ saveBtn.addEventListener("click", function () {
       email: document.querySelector('[placeholder="email"]').value,
     })
   )
-  store.dispatch(action_creators.DISPLAY_ACCOUNTS_ACTION) //ovim se vraca display na 1
   document.querySelector('[placeholder="id"]').value = ""
   document.querySelector('[placeholder="name"]').value = ""
   document.querySelector('[placeholder="phone"]').value = ""
   document.querySelector('[placeholder="email"]').value = ""
+  store.dispatch(action_creators.DISPLAY_ACCOUNTS_ACTION) //ovim se vraca display na 1
 })
 
 function changeView() {

@@ -519,3 +519,8 @@ const composedEnhancer = composeWithDevTools(applyMiddleware(thunkMiddleware))
 const store = createStore(rootReducer, composedEnhancer)
 
 export default store
+    //////////////////
+  //////////////////
+  //////////////////
+ semestar 3 lek: MIDDLEWARE
+ nesto se pokrece u sredini, u nasem slucaju ununtat reduxa je sredina izmedju actiona i reducera, middlw je fun koja ce se pokrenuti kada dispecujemo neki action
